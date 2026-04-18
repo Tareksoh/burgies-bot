@@ -34,7 +34,12 @@ YDL_OPTS = {
     'default_search': 'ytsearch',
     'noplaylist': True,
     'extract_flat': False,
-    'source_address': '0.0.0.0',  # force IPv4
+    'source_address': '0.0.0.0',
+    'extractor_args': {
+        'youtube': {
+            'player_client': ['ios', 'mweb'],
+        }
+    },
 }
 
 
