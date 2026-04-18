@@ -22,7 +22,7 @@ def _get_cookies_file() -> str | None:
 
 # yt-dlp options — no download, stream directly
 YDL_OPTS = {
-    'format': 'bestaudio[ext=webm]/bestaudio[ext=m4a]/bestaudio/best',
+    'format': 'bestaudio*/best',
     'quiet': True,
     'no_warnings': True,
     'default_search': 'ytsearch',
