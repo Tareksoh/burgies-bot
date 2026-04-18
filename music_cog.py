@@ -37,7 +37,7 @@ YDL_OPTS = {
     'source_address': '0.0.0.0',
     'extractor_args': {
         'youtube': {
-            'player_client': ['tv_embedded'],
+            'player_client': ['web', 'android'],
         }
     },
 }
