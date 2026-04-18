@@ -3,10 +3,22 @@ from __future__ import annotations
 import asyncio
 import random
 import os
+import base64
 import discord
 from discord.ext import commands
 from collections import deque
 import yt_dlp
+
+
+def _get_cookies_file() -> str | None:
+    cookies_b64 = os.getenv('YOUTUBE_COOKIES')
+    if not cookies_b64:
+        return None
+    path = '/tmp/yt_cookies.txt'
+    if not os.path.exists(path):
+        with open(path, 'w') as f:
+            f.write(base64.b64decode(cookies_b64).decode())
+    return path
 
 # yt-dlp options — no download, stream directly
 YDL_OPTS = {
@@ -166,7 +178,11 @@ class Music(commands.Cog):
         loop = asyncio.get_event_loop()
 
         def extract():
-            with yt_dlp.YoutubeDL(YDL_OPTS) as ydl:
+            opts = dict(YDL_OPTS)
+            cookies = _get_cookies_file()
+            if cookies:
+                opts['cookiefile'] = cookies
+            with yt_dlp.YoutubeDL(opts) as ydl:
                 info = ydl.extract_info(url, download=False)
                 if 'entries' in info:
                     info = info['entries'][0]
