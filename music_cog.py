@@ -13,11 +13,17 @@ import yt_dlp
 def _get_cookies_file() -> str | None:
     cookies_b64 = os.getenv('YOUTUBE_COOKIES')
     if not cookies_b64:
+        print('[Cookies] YOUTUBE_COOKIES env var not found')
         return None
+    print(f'[Cookies] Found YOUTUBE_COOKIES ({len(cookies_b64)} chars)')
     path = '/tmp/yt_cookies.txt'
-    if not os.path.exists(path):
+    try:
         with open(path, 'w') as f:
             f.write(base64.b64decode(cookies_b64).decode())
+        print(f'[Cookies] Written to {path}')
+    except Exception as e:
+        print(f'[Cookies] Failed to write: {e}')
+        return None
     return path
 
 # yt-dlp options — no download, stream directly
